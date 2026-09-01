@@ -7,7 +7,8 @@
     "dev": "vite",
     "build": "vite build",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "postinstall": "node -e \"if(process.platform!=='win32'){const{execSync}=require('child_process');try{execSync('chmod +x node_modules/.bin/*',{stdio:'ignore'})}catch(e){}}\""
   },
   "dependencies": {
     "@fortawesome/fontawesome-free": "^7.3.1",
