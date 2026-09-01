@@ -137,7 +137,7 @@ const FeaturedGames = () => {
               >
                 {embedUrl ? (
                   <iframe
-                    src={`${embedUrl}?rel=0`}
+                    src={`${embedUrl}?rel=0&vq=hd1080`}
                     style={{
                       position: 'absolute',
                       top: 0, left: 0,
@@ -391,7 +391,7 @@ const FeaturedGames = () => {
                     }}>
                       {embedUrl ? (
                         <iframe
-                          src={`${embedUrl}?rel=0`}
+                          src={`${embedUrl}?rel=0&vq=hd1080`}
                           style={{
                             position: 'absolute',
                             top: 0, left: 0,

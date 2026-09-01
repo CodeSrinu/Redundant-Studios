@@ -88,7 +88,7 @@ const FeaturedGameSection = () => {
                   width: '100%', height: '100%',
                   border: 'none',
                 }}
-                src={embedUrl}
+                src={`${embedUrl}?rel=0&vq=hd1080`}
                 title="Featured Game Trailer"
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                 allowFullScreen
