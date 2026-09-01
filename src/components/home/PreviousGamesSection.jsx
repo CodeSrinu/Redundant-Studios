@@ -5,12 +5,15 @@ import { getEmbedUrl } from '../../utils/youtube';
 import { Play, ChevronRight } from 'lucide-react';
 import { COLORS, SPACING, BORDER_RADIUS, FONT, GRADIENTS } from '../../styles';
 
+const isValidUrl = (url) => url && url.trim() !== '' && url.trim() !== '#';
+
 const PreviousGamesSection = () => {
   const { games, loading } = useGames();
 
   if (loading) return null;
 
-  const previousGames = games.filter(game => !game.featured).slice(3, 6);
+  // Show games 2-5 after the latest one (skip featured + the first latest shown above)
+  const previousGames = games.filter(game => !game.featured).slice(1, 4);
 
   if (previousGames.length === 0) return null;
 
@@ -96,6 +99,8 @@ const PreviousGamesSection = () => {
         >
           {previousGames.map((game) => {
             const embedUrl = getEmbedUrl(game.trailerUrl);
+            const hasTrailer = isValidUrl(embedUrl);
+            const hasPlaystore = isValidUrl(game.playstoreUrl);
             return (
               <div
                 key={game.id}
@@ -135,7 +140,7 @@ const PreviousGamesSection = () => {
                       allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                       allowFullScreen
                     />
-                  ) : game.thumbnailUrl ? (
+                  ) : game.thumbnailUrl && isValidUrl(game.thumbnailUrl) ? (
                     <img
                       src={game.thumbnailUrl}
                       alt={game.title}
@@ -226,7 +231,7 @@ const PreviousGamesSection = () => {
                   )}
 
                   <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
-                    {embedUrl && (
+                    {hasTrailer && (
                       <a
                         href={embedUrl}
                         target="_blank"
@@ -243,9 +248,9 @@ const PreviousGamesSection = () => {
                           textTransform: 'uppercase',
                           letterSpacing: '2px',
                           fontSize: '0.7rem',
-                          borderRadius: BORDER_RADIUS.md,
+                          borderRadius: BORDER_RADIUS.sm,
                           textDecoration: 'none',
-                          transition: 'all 0.2s ease',
+                          transition: 'all 0.5s cubic-bezier(0.4, 0, 0.2, 1)',
                           flex: 1,
                           justifyContent: 'center',
                         }}
@@ -256,7 +261,7 @@ const PreviousGamesSection = () => {
                         Watch Trailer
                       </a>
                     )}
-                    {game.playstoreUrl && (
+                    {hasPlaystore && (
                       <a
                         href={game.playstoreUrl}
                         target="_blank"
@@ -273,10 +278,10 @@ const PreviousGamesSection = () => {
                           textTransform: 'uppercase',
                           letterSpacing: '2px',
                           fontSize: '0.7rem',
-                          borderRadius: BORDER_RADIUS.md,
+                          borderRadius: BORDER_RADIUS.sm,
                           border: `1px solid ${COLORS.inputBorder}`,
                           textDecoration: 'none',
-                          transition: 'all 0.2s ease',
+                          transition: 'all 0.5s cubic-bezier(0.4, 0, 0.2, 1)',
                           flex: 1,
                         }}
                         onMouseEnter={(e) => {

@@ -5,7 +5,37 @@
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Redundant Studios</title>
-    <script type="module" crossorigin src="/assets/index-fzuhffp8.js"></script>
+    <script>
+      // Hide Netlify badge (only on sites not on Pro plan)
+      (function () {
+        function hideBadge() {
+          var badges = document.querySelectorAll('[data-nf-badge], .nf-badge, div[style*="position: fixed"][style*="bottom"]');
+          badges.forEach(function (b) {
+            if (b.textContent && b.textContent.toLowerCase().indexOf('netlify') !== -1) {
+              b.style.display = 'none';
+              b.remove();
+            }
+          });
+          // Also remove any iframe Netlify injects
+          document.querySelectorAll('iframe[src*="netlify"]').forEach(function (f) {
+            if (f.src.indexOf('badge') !== -1 || f.src.indexOf('inject') !== -1) f.remove();
+          });
+        }
+        if (document.readyState === 'loading') {
+          document.addEventListener('DOMContentLoaded', hideBadge);
+        } else {
+          hideBadge();
+        }
+        // Run again after a delay in case it's injected after load
+        setTimeout(hideBadge, 1000);
+        setTimeout(hideBadge, 3000);
+        // Observe DOM in case it's added later
+        try {
+          new MutationObserver(hideBadge).observe(document.documentElement, { childList: true, subtree: true });
+        } catch (e) {}
+      })();
+    </script>
+    <script type="module" crossorigin src="/assets/index-BfnrWc6V.js"></script>
     <link rel="stylesheet" crossorigin href="/assets/index-zHvhR3js.css">
   </head>
   <body>

@@ -2,7 +2,6 @@ import React from 'react';
 import Hero from '../components/home/Hero';
 import FeaturedGames from '../components/home/FeaturedGames';
 import FeaturedGameSection from '../components/home/FeaturedGameSection';
-import PreviousGamesSection from '../components/home/PreviousGamesSection';
 import Founders from '../components/home/Founders';
 import SocialLinks from '../components/home/SocialLinks';
 import { useFirestoreContent } from '../hooks/useFirestoreContent';
@@ -34,7 +33,6 @@ const Home = () => {
       {visibility.hero !== false && <Hero content={displayContent} />}
       {visibility.featuredGame !== false && <FeaturedGameSection content={displayContent} />}
       {visibility.featuredGames !== false && <FeaturedGames content={displayContent} />}
-      {visibility.previousGames !== false && <PreviousGamesSection content={displayContent} />}
       {visibility.founders !== false && <Founders content={displayContent} />}
       {visibility.socialLinks !== false && <SocialLinks content={displayContent} />}
     </div>

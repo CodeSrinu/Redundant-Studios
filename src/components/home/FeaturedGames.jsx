@@ -5,14 +5,17 @@ import { getEmbedUrl } from '../../utils/youtube';
 import { Play, ChevronRight, ExternalLink } from 'lucide-react';
 import { COLORS, SPACING, BORDER_RADIUS, FONT, GRADIENTS, SHADOW } from '../../styles';
 
+const isValidUrl = (url) => url && url.trim() !== '' && url.trim() !== '#';
+
 const FeaturedGames = () => {
   const { games, loading } = useGames();
 
   if (loading) return null;
 
   const latest = games.filter(g => !g.featured).slice(0, 1);
+  const previousGames = games.filter(g => !g.featured).slice(1, 4);
 
-  if (latest.length === 0) return null;
+  if (latest.length === 0 && previousGames.length === 0) return null;
 
   return (
     <section style={{
@@ -80,7 +83,7 @@ const FeaturedGames = () => {
               display: 'inline-flex',
               alignItems: 'center',
               gap: '0.4rem',
-              transition: 'opacity 0.35s ease',
+              transition: 'opacity 0.5s ease',
             }}
             onMouseEnter={(e) => e.currentTarget.style.opacity = '0.7'}
             onMouseLeave={(e) => e.currentTarget.style.opacity = '1'}
@@ -89,8 +92,11 @@ const FeaturedGames = () => {
           </Link>
         </div>
 
-        {latest.map((game) => {
+        {/* Latest Game — big featured card */}
+        {latest.length > 0 && latest.map((game) => {
           const embedUrl = getEmbedUrl(game.trailerUrl);
+          const hasTrailer = isValidUrl(embedUrl);
+          const hasPlaystore = isValidUrl(game.playstoreUrl);
           const modes = game.modes ? game.modes.split(',').map(m => {
             const [name, desc] = m.split('|');
             return { name: name?.trim(), desc: desc?.trim() };
@@ -142,7 +148,7 @@ const FeaturedGames = () => {
                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                     allowFullScreen
                   />
-                ) : game.thumbnailUrl ? (
+                ) : isValidUrl(game.thumbnailUrl) ? (
                   <img
                     src={game.thumbnailUrl}
                     alt={game.title}
@@ -243,7 +249,7 @@ const FeaturedGames = () => {
                 </div>
 
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
-                  {embedUrl && (
+                  {hasTrailer && (
                     <a
                       href={embedUrl}
                       target="_blank"
@@ -262,7 +268,7 @@ const FeaturedGames = () => {
                         fontSize: '0.85rem',
                         borderRadius: BORDER_RADIUS.sm,
                         textDecoration: 'none',
-                        transition: 'all 0.35s cubic-bezier(0.4, 0, 0.2, 1)',
+                        transition: 'all 0.5s cubic-bezier(0.4, 0, 0.2, 1)',
                         boxShadow: '0 0 20px rgba(225, 6, 0, 0.3)',
                       }}
                       onMouseEnter={(e) => {
@@ -274,12 +280,12 @@ const FeaturedGames = () => {
                     >
                       <span style={{ display: 'inline-flex', alignItems: 'center', gap: '0.6rem' }}>
                         <Play size={14} fill={COLORS.white} />
-                        Watch Trailer in Youtube
+                        Watch Trailer
                       </span>
                       <ExternalLink size={14} />
                     </a>
                   )}
-                  {game.playstoreUrl && (
+                  {hasPlaystore && (
                     <a
                       href={game.playstoreUrl}
                       target="_blank"
@@ -320,6 +326,247 @@ const FeaturedGames = () => {
           );
         })}
 
+        {/* Previous Games — 3-col grid below */}
+        {previousGames.length > 0 && (
+          <div style={{ marginTop: SPACING.xl }}>
+            <div style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: '0.75rem',
+              marginBottom: SPACING.md,
+            }}>
+              <span style={{
+                display: 'inline-block',
+                width: '40px',
+                height: '2px',
+                background: COLORS.primary,
+              }} />
+              <span style={{
+                fontFamily: FONT.body,
+                fontSize: '0.85rem',
+                color: COLORS.primary,
+                fontWeight: 700,
+                letterSpacing: '4px',
+                textTransform: 'uppercase',
+              }}>
+                Previous Projects
+              </span>
+            </div>
+            <div style={{
+              display: 'grid',
+              gridTemplateColumns: 'repeat(3, 1fr)',
+              gap: SPACING.lg,
+            }}
+            className="previous-grid"
+            >
+              {previousGames.map((game) => {
+                const embedUrl = getEmbedUrl(game.trailerUrl);
+                const hasTrailer = isValidUrl(embedUrl);
+                const hasPlaystore = isValidUrl(game.playstoreUrl);
+                return (
+                  <div
+                    key={game.id}
+                    style={{
+                      background: COLORS.surface,
+                      borderRadius: BORDER_RADIUS.md,
+                      overflow: 'hidden',
+                      border: `1px solid ${COLORS.inputBorder}`,
+                      transition: 'box-shadow 0.5s cubic-bezier(0.4, 0, 0.2, 1)',
+                      display: 'flex',
+                      flexDirection: 'column',
+                    }}
+                    onMouseEnter={(e) => {
+                      e.currentTarget.style.boxShadow = '0 0 50px rgba(225, 6, 0, 0.2), 0 0 0 1px rgba(225, 6, 0, 0.15)';
+                    }}
+                    onMouseLeave={(e) => {
+                      e.currentTarget.style.boxShadow = 'none';
+                    }}
+                  >
+                    <div style={{
+                      position: 'relative',
+                      width: '100%',
+                      aspectRatio: '16/9',
+                      overflow: 'hidden',
+                      backgroundColor: COLORS.bgElevated,
+                    }}>
+                      {embedUrl ? (
+                        <iframe
+                          src={`${embedUrl}?rel=0`}
+                          style={{
+                            position: 'absolute',
+                            top: 0, left: 0,
+                            width: '100%', height: '100%',
+                            border: 'none',
+                          }}
+                          title={game.title}
+                          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                          allowFullScreen
+                        />
+                      ) : isValidUrl(game.thumbnailUrl) ? (
+                        <img
+                          src={game.thumbnailUrl}
+                          alt={game.title}
+                          loading="lazy"
+                          style={{
+                            width: '100%', height: '100%',
+                            objectFit: 'cover',
+                            display: 'block',
+                          }}
+                        />
+                      ) : (
+                        <div style={{
+                          position: 'absolute',
+                          inset: 0,
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          flexDirection: 'column',
+                          gap: '0.5rem',
+                          color: COLORS.muted,
+                        }}>
+                          <Play size={32} color={COLORS.primary} />
+                          <span style={{
+                            fontFamily: FONT.body,
+                            fontSize: '0.75rem',
+                            letterSpacing: '2px',
+                            textTransform: 'uppercase',
+                            fontWeight: 600,
+                          }}>Coming Soon</span>
+                        </div>
+                      )}
+
+                      <div style={{
+                        position: 'absolute',
+                        top: '0.75rem',
+                        left: '0.75rem',
+                        padding: '0.3rem 0.7rem',
+                        background: 'rgba(10,10,10,0.85)',
+                        color: COLORS.primary,
+                        fontFamily: FONT.body,
+                        fontSize: '0.65rem',
+                        fontWeight: 700,
+                        textTransform: 'uppercase',
+                        letterSpacing: '2px',
+                        borderRadius: BORDER_RADIUS.sm,
+                      }}>
+                        {game.status}
+                      </div>
+                    </div>
+
+                    <div style={{ padding: SPACING.md, display: 'flex', flexDirection: 'column', flex: 1 }}>
+                      <h3 style={{
+                        fontFamily: FONT.display,
+                        fontSize: '1.3rem',
+                        color: COLORS.white,
+                        margin: 0,
+                        fontWeight: 700,
+                        letterSpacing: '1.5px',
+                        marginBottom: '0.4rem',
+                        lineHeight: '1.1',
+                      }}>
+                        {game.title}
+                      </h3>
+                      <div style={{
+                        fontFamily: FONT.body,
+                        fontSize: '0.8rem',
+                        color: COLORS.muted,
+                        textTransform: 'uppercase',
+                        letterSpacing: '2px',
+                        fontWeight: 600,
+                        marginBottom: SPACING.sm,
+                      }}>
+                        {game.genre} · {game.platform}
+                      </div>
+                      {game.description && (
+                        <p style={{
+                          fontFamily: FONT.body,
+                          fontSize: '0.9rem',
+                          color: COLORS.secondary,
+                          lineHeight: 1.5,
+                          margin: 0,
+                          marginBottom: SPACING.md,
+                          fontWeight: 500,
+                          flex: 1,
+                        }}>
+                          {game.description.length > 120 ? game.description.substring(0, 120) + '...' : game.description}
+                        </p>
+                      )}
+
+                      <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
+                        {hasTrailer && (
+                          <a
+                            href={embedUrl}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            style={{
+                              display: 'inline-flex',
+                              alignItems: 'center',
+                              gap: '0.4rem',
+                              padding: '0.6rem 1rem',
+                              background: GRADIENTS.primary,
+                              color: COLORS.white,
+                              fontFamily: FONT.body,
+                              fontWeight: 700,
+                              textTransform: 'uppercase',
+                              letterSpacing: '2px',
+                              fontSize: '0.7rem',
+                              borderRadius: BORDER_RADIUS.sm,
+                              textDecoration: 'none',
+                              transition: 'all 0.5s cubic-bezier(0.4, 0, 0.2, 1)',
+                              flex: 1,
+                              justifyContent: 'center',
+                            }}
+                            onMouseEnter={(e) => e.currentTarget.style.boxShadow = '0 0 20px rgba(225, 6, 0, 0.4)'}
+                            onMouseLeave={(e) => e.currentTarget.style.boxShadow = 'none'}
+                          >
+                            <Play size={12} fill={COLORS.white} />
+                            Watch Trailer
+                          </a>
+                        )}
+                        {hasPlaystore && (
+                          <a
+                            href={game.playstoreUrl}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            style={{
+                              display: 'inline-flex',
+                              alignItems: 'center',
+                              justifyContent: 'center',
+                              padding: '0.6rem 1rem',
+                              background: 'transparent',
+                              color: COLORS.white,
+                              fontFamily: FONT.body,
+                              fontWeight: 700,
+                              textTransform: 'uppercase',
+                              letterSpacing: '2px',
+                              fontSize: '0.7rem',
+                              borderRadius: BORDER_RADIUS.sm,
+                              border: `1px solid ${COLORS.inputBorder}`,
+                              textDecoration: 'none',
+                              transition: 'all 0.5s cubic-bezier(0.4, 0, 0.2, 1)',
+                              flex: 1,
+                            }}
+                            onMouseEnter={(e) => {
+                              e.currentTarget.style.borderColor = COLORS.primary;
+                              e.currentTarget.style.color = COLORS.primary;
+                            }}
+                            onMouseLeave={(e) => {
+                              e.currentTarget.style.borderColor = COLORS.inputBorder;
+                              e.currentTarget.style.color = COLORS.white;
+                            }}
+                          >
+                            Play Store
+                          </a>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        )}
+
         <p style={{
           fontFamily: FONT.body,
           fontSize: '0.8rem',
@@ -343,6 +590,14 @@ const FeaturedGames = () => {
           }
           .latest-card-content {
             padding: ${SPACING.md} !important;
+          }
+          .previous-grid {
+            grid-template-columns: 1fr !important;
+          }
+        }
+        @media (max-width: 1100px) and (min-width: 901px) {
+          .previous-grid {
+            grid-template-columns: repeat(2, 1fr) !important;
           }
         }
         @media (max-width: 480px) {
