@@ -9,16 +9,32 @@
       // Hide Netlify badge (only on sites not on Pro plan)
       (function () {
         function hideBadge() {
-          var badges = document.querySelectorAll('[data-nf-badge], .nf-badge, div[style*="position: fixed"][style*="bottom"]');
-          badges.forEach(function (b) {
-            if (b.textContent && b.textContent.toLowerCase().indexOf('netlify') !== -1) {
-              b.style.display = 'none';
-              b.remove();
+          // Remove badges and iframes with netlify in them
+          document.querySelectorAll('[data-nf-badge], .nf-badge, .netlify-badge').forEach(function (el) {
+            el.remove();
+          });
+          // Remove iframes that contain netlify badge
+          document.querySelectorAll('iframe').forEach(function (f) {
+            if (f.src && (f.src.indexOf('netlify') !== -1 || f.src.indexOf('badge') !== -1)) {
+              f.remove();
             }
           });
-          // Also remove any iframe Netlify injects
-          document.querySelectorAll('iframe[src*="netlify"]').forEach(function (f) {
-            if (f.src.indexOf('badge') !== -1 || f.src.indexOf('inject') !== -1) f.remove();
+          // Remove any element with netlify text content in fixed/bottom positioned elements
+          document.querySelectorAll('div').forEach(function (b) {
+            var text = b.textContent ? b.textContent.toLowerCase() : '';
+            if (text.indexOf('netlify') !== -1 && text.length < 100) {
+              var style = window.getComputedStyle(b);
+              if (style.position === 'fixed' || style.position === 'absolute' ||
+                  (b.style.position === 'fixed') || (b.style.position === 'absolute')) {
+                b.remove();
+              }
+            }
+          });
+          // Remove elements with data-netlify attribute
+          document.querySelectorAll('[data-netlify]').forEach(function (el) {
+            if (el.tagName === 'IFRAME' || el.textContent.toLowerCase().indexOf('netlify') !== -1) {
+              el.remove();
+            }
           });
         }
         if (document.readyState === 'loading') {
@@ -26,9 +42,11 @@
         } else {
           hideBadge();
         }
-        // Run again after a delay in case it's injected after load
+        // Run repeatedly to catch dynamically injected badges
+        setTimeout(hideBadge, 500);
         setTimeout(hideBadge, 1000);
-        setTimeout(hideBadge, 3000);
+        setTimeout(hideBadge, 2000);
+        setTimeout(hideBadge, 5000);
         // Observe DOM in case it's added later
         try {
           new MutationObserver(hideBadge).observe(document.documentElement, { childList: true, subtree: true });
