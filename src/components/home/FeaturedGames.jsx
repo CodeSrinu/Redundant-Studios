@@ -330,14 +330,11 @@ const FeaturedGames = () => {
   const upcomingGames = games.filter(g => g.category === 'upcoming').sort((a, b) => (a.order || 0) - (b.order || 0));
   const previousGames = games.filter(g => g.category === 'previous').sort((a, b) => (a.order || 0) - (b.order || 0));
 
-  // For backwards compatibility: games without a category that are not featured -> previous
-  const uncategorized = games.filter(g => !g.featured && !g.category).sort((a, b) => (a.order || 0) - (b.order || 0));
-
   return (
     <>
       <GameSection title="Latest Games" label="Now Available" games={latestGames} categoryName="latest" />
       <GameSection title="Upcoming Games" label="Coming Soon" games={upcomingGames} categoryName="upcoming" />
-      <GameSection title="Previous Games" label="Previously Released" games={[...previousGames, ...uncategorized]} categoryName="previous" />
+      <GameSection title="Previous Games" label="Previously Released" games={previousGames} categoryName="previous" />
     </>
   );
 };
