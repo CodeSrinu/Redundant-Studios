@@ -84,11 +84,26 @@ export const seedDatabase = async () => {
       platform: 'Android',
       description: 'A 2D top-down zombie shooter — survive waves of the undead.',
       status: 'Released',
+      category: 'latest',
       thumbnailUrl: 'https://via.placeholder.com/400x225',
       trailerUrl: 'https://www.youtube.com/watch?v=QMeNKpE8COM',
       playstoreUrl: '#',
       order: 0,
       featured: true
+    });
+
+    await addDoc(collection(db, 'games'), {
+      title: 'Project Neon',
+      genre: 'Cyberpunk Action',
+      platform: 'Android',
+      description: 'Explore a neon-drenched city in this high-octane action game.',
+      status: 'Coming Soon',
+      category: 'upcoming',
+      thumbnailUrl: 'https://via.placeholder.com/400x225',
+      trailerUrl: '',
+      playstoreUrl: null,
+      order: 1,
+      featured: false
     });
 
     return { success: true };

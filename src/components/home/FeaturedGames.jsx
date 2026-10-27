@@ -7,18 +7,220 @@ import { COLORS, SPACING, BORDER_RADIUS, FONT, GRADIENTS } from '../../styles';
 
 const isValidUrl = (url) => url && url.trim() !== '' && url.trim() !== '#';
 
-const PreviousGames = () => {
-  const { games, loading } = useGames();
+// Reusable GameCard component
+const GameCard = ({ game }) => {
+  const embedUrl = getEmbedUrl(game.trailerUrl);
+  const watchUrl = getWatchUrl(game.trailerUrl);
+  const hasTrailer = isValidUrl(embedUrl);
+  const hasPlaystore = isValidUrl(game.playstoreUrl);
 
-  if (loading) return null;
+  return (
+    <div
+      style={{
+        background: COLORS.surface,
+        borderRadius: BORDER_RADIUS.md,
+        overflow: 'hidden',
+        border: `1px solid ${COLORS.inputBorder}`,
+        transition: 'box-shadow 0.5s cubic-bezier(0.4, 0, 0.2, 1)',
+        display: 'flex',
+        flexDirection: 'column',
+      }}
+      onMouseEnter={(e) => {
+        e.currentTarget.style.boxShadow = '0 0 50px rgba(225, 6, 0, 0.2), 0 0 0 1px rgba(225, 6, 0, 0.15)';
+      }}
+      onMouseLeave={(e) => {
+        e.currentTarget.style.boxShadow = 'none';
+      }}
+    >
+      <div style={{
+        position: 'relative',
+        width: '100%',
+        aspectRatio: '16/9',
+        overflow: 'hidden',
+        backgroundColor: COLORS.bgElevated,
+      }}>
+        {embedUrl ? (
+          <iframe
+            src={`${embedUrl}?rel=0&vq=hd1080`}
+            style={{
+              position: 'absolute',
+              top: 0, left: 0,
+              width: '100%', height: '100%',
+              border: 'none',
+            }}
+            title={game.title}
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowFullScreen
+          />
+        ) : isValidUrl(game.thumbnailUrl) ? (
+          <img
+            src={game.thumbnailUrl}
+            alt={game.title}
+            loading="lazy"
+            style={{
+              width: '100%', height: '100%',
+              objectFit: 'cover',
+              display: 'block',
+            }}
+          />
+        ) : (
+          <div style={{
+            position: 'absolute',
+            inset: 0,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            flexDirection: 'column',
+            gap: '0.5rem',
+            color: COLORS.muted,
+          }}>
+            <Play size={32} color={COLORS.primary} />
+            <span style={{
+              fontFamily: FONT.body,
+              fontSize: '0.75rem',
+              letterSpacing: '2px',
+              textTransform: 'uppercase',
+              fontWeight: 600,
+            }}>Coming Soon</span>
+          </div>
+        )}
 
-  const nonFeatured = games.filter(g => !g.featured).sort((a, b) => (a.order || 0) - (b.order || 0));
+        <div style={{
+          position: 'absolute',
+          top: '0.75rem',
+          left: '0.75rem',
+          padding: '0.3rem 0.7rem',
+          background: 'rgba(10,10,10,0.85)',
+          color: COLORS.primary,
+          fontFamily: FONT.body,
+          fontSize: '0.65rem',
+          fontWeight: 700,
+          textTransform: 'uppercase',
+          letterSpacing: '2px',
+          borderRadius: BORDER_RADIUS.sm,
+        }}>
+          {game.status}
+        </div>
+      </div>
 
-  if (nonFeatured.length === 0) return null;
+      <div style={{ padding: SPACING.md, display: 'flex', flexDirection: 'column', flex: 1 }}>
+        <h3 style={{
+          fontFamily: FONT.display,
+          fontSize: '1.3rem',
+          color: COLORS.white,
+          margin: 0,
+          fontWeight: 700,
+          letterSpacing: '1.5px',
+          marginBottom: '0.4rem',
+          lineHeight: '1.1',
+        }}>
+          {game.title}
+        </h3>
+        <div style={{
+          fontFamily: FONT.body,
+          fontSize: '0.8rem',
+          color: COLORS.muted,
+          textTransform: 'uppercase',
+          letterSpacing: '2px',
+          fontWeight: 600,
+          marginBottom: SPACING.sm,
+        }}>
+          {game.genre} · {game.platform}
+        </div>
+        {game.description && (
+          <p style={{
+            fontFamily: FONT.body,
+            fontSize: '0.9rem',
+            color: COLORS.secondary,
+            lineHeight: 1.5,
+            margin: 0,
+            marginBottom: SPACING.md,
+            fontWeight: 500,
+            flex: 1,
+          }}>
+            {game.description.length > 120 ? game.description.substring(0, 120) + '...' : game.description}
+          </p>
+        )}
+
+        <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
+          {hasTrailer && (
+            <a
+              href={watchUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '0.4rem',
+                padding: '0.6rem 1rem',
+                background: GRADIENTS.primary,
+                color: COLORS.white,
+                fontFamily: FONT.body,
+                fontWeight: 700,
+                textTransform: 'uppercase',
+                letterSpacing: '2px',
+                fontSize: '0.7rem',
+                borderRadius: BORDER_RADIUS.sm,
+                textDecoration: 'none',
+                transition: 'all 0.5s cubic-bezier(0.4, 0, 0.2, 1)',
+                flex: 1,
+                justifyContent: 'center',
+              }}
+              onMouseEnter={(e) => e.currentTarget.style.boxShadow = '0 0 20px rgba(225, 6, 0, 0.4)'}
+              onMouseLeave={(e) => e.currentTarget.style.boxShadow = 'none'}
+            >
+              <Play size={12} fill={COLORS.white} />
+              Watch Trailer
+            </a>
+          )}
+          {hasPlaystore && (
+            <a
+              href={game.playstoreUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                padding: '0.6rem 1rem',
+                background: 'transparent',
+                color: COLORS.white,
+                fontFamily: FONT.body,
+                fontWeight: 700,
+                textTransform: 'uppercase',
+                letterSpacing: '2px',
+                fontSize: '0.7rem',
+                borderRadius: BORDER_RADIUS.sm,
+                border: `1px solid ${COLORS.inputBorder}`,
+                textDecoration: 'none',
+                transition: 'all 0.5s cubic-bezier(0.4, 0, 0.2, 1)',
+                flex: 1,
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.borderColor = COLORS.primary;
+                e.currentTarget.style.color = COLORS.primary;
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.borderColor = COLORS.inputBorder;
+                e.currentTarget.style.color = COLORS.white;
+              }}
+            >
+              Play Store
+            </a>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+};
+
+// Reusable Section component
+const GameSection = ({ title, label, games, categoryName }) => {
+  if (games.length === 0) return null;
 
   return (
     <section style={{
-      padding: `${SPACING.xxxl} ${SPACING.lg}`,
+      padding: `${SPACING.xxl} ${SPACING.lg}`,
       backgroundColor: COLORS.bg,
       borderTop: `1px solid ${COLORS.inputBorder}`,
     }}>
@@ -43,7 +245,7 @@ const PreviousGames = () => {
             letterSpacing: '4px',
             textTransform: 'uppercase',
           }}>
-            Released
+            {label}
           </span>
         </div>
 
@@ -65,7 +267,7 @@ const PreviousGames = () => {
             margin: 0,
             lineHeight: '0.95',
           }}>
-            Previous Projects
+            {title}
           </h2>
           <Link
             to="/games"
@@ -94,224 +296,22 @@ const PreviousGames = () => {
           gridTemplateColumns: 'repeat(3, 1fr)',
           gap: SPACING.lg,
         }}
-        className="previous-games-grid"
+        className={`games-${categoryName}-grid`}
         >
-          {nonFeatured.map((game) => {
-            const embedUrl = getEmbedUrl(game.trailerUrl);
-            const watchUrl = getWatchUrl(game.trailerUrl);
-            const hasTrailer = isValidUrl(embedUrl);
-            const hasPlaystore = isValidUrl(game.playstoreUrl);
-            return (
-              <div
-                key={game.id}
-                style={{
-                  background: COLORS.surface,
-                  borderRadius: BORDER_RADIUS.md,
-                  overflow: 'hidden',
-                  border: `1px solid ${COLORS.inputBorder}`,
-                  transition: 'box-shadow 0.5s cubic-bezier(0.4, 0, 0.2, 1)',
-                  display: 'flex',
-                  flexDirection: 'column',
-                }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.boxShadow = '0 0 50px rgba(225, 6, 0, 0.2), 0 0 0 1px rgba(225, 6, 0, 0.15)';
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.boxShadow = 'none';
-                }}
-              >
-                <div style={{
-                  position: 'relative',
-                  width: '100%',
-                  aspectRatio: '16/9',
-                  overflow: 'hidden',
-                  backgroundColor: COLORS.bgElevated,
-                }}>
-                  {embedUrl ? (
-                    <iframe
-                      src={`${embedUrl}?rel=0&vq=hd1080`}
-                      style={{
-                        position: 'absolute',
-                        top: 0, left: 0,
-                        width: '100%', height: '100%',
-                        border: 'none',
-                      }}
-                      title={game.title}
-                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                      allowFullScreen
-                    />
-                  ) : isValidUrl(game.thumbnailUrl) ? (
-                    <img
-                      src={game.thumbnailUrl}
-                      alt={game.title}
-                      loading="lazy"
-                      style={{
-                        width: '100%', height: '100%',
-                        objectFit: 'cover',
-                        display: 'block',
-                      }}
-                    />
-                  ) : (
-                    <div style={{
-                      position: 'absolute',
-                      inset: 0,
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      flexDirection: 'column',
-                      gap: '0.5rem',
-                      color: COLORS.muted,
-                    }}>
-                      <Play size={32} color={COLORS.primary} />
-                      <span style={{
-                        fontFamily: FONT.body,
-                        fontSize: '0.75rem',
-                        letterSpacing: '2px',
-                        textTransform: 'uppercase',
-                        fontWeight: 600,
-                      }}>Coming Soon</span>
-                    </div>
-                  )}
-
-                  <div style={{
-                    position: 'absolute',
-                    top: '0.75rem',
-                    left: '0.75rem',
-                    padding: '0.3rem 0.7rem',
-                    background: 'rgba(10,10,10,0.85)',
-                    color: COLORS.primary,
-                    fontFamily: FONT.body,
-                    fontSize: '0.65rem',
-                    fontWeight: 700,
-                    textTransform: 'uppercase',
-                    letterSpacing: '2px',
-                    borderRadius: BORDER_RADIUS.sm,
-                  }}>
-                    {game.status}
-                  </div>
-                </div>
-
-                <div style={{ padding: SPACING.md, display: 'flex', flexDirection: 'column', flex: 1 }}>
-                  <h3 style={{
-                    fontFamily: FONT.display,
-                    fontSize: '1.3rem',
-                    color: COLORS.white,
-                    margin: 0,
-                    fontWeight: 700,
-                    letterSpacing: '1.5px',
-                    marginBottom: '0.4rem',
-                    lineHeight: '1.1',
-                  }}>
-                    {game.title}
-                  </h3>
-                  <div style={{
-                    fontFamily: FONT.body,
-                    fontSize: '0.8rem',
-                    color: COLORS.muted,
-                    textTransform: 'uppercase',
-                    letterSpacing: '2px',
-                    fontWeight: 600,
-                    marginBottom: SPACING.sm,
-                  }}>
-                    {game.genre} · {game.platform}
-                  </div>
-                  {game.description && (
-                    <p style={{
-                      fontFamily: FONT.body,
-                      fontSize: '0.9rem',
-                      color: COLORS.secondary,
-                      lineHeight: 1.5,
-                      margin: 0,
-                      marginBottom: SPACING.md,
-                      fontWeight: 500,
-                      flex: 1,
-                    }}>
-                      {game.description.length > 120 ? game.description.substring(0, 120) + '...' : game.description}
-                    </p>
-                  )}
-
-                  <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
-                    {hasTrailer && (
-                      <a
-                        href={watchUrl}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        style={{
-                          display: 'inline-flex',
-                          alignItems: 'center',
-                          gap: '0.4rem',
-                          padding: '0.6rem 1rem',
-                          background: GRADIENTS.primary,
-                          color: COLORS.white,
-                          fontFamily: FONT.body,
-                          fontWeight: 700,
-                          textTransform: 'uppercase',
-                          letterSpacing: '2px',
-                          fontSize: '0.7rem',
-                          borderRadius: BORDER_RADIUS.sm,
-                          textDecoration: 'none',
-                          transition: 'all 0.5s cubic-bezier(0.4, 0, 0.2, 1)',
-                          flex: 1,
-                          justifyContent: 'center',
-                        }}
-                        onMouseEnter={(e) => e.currentTarget.style.boxShadow = '0 0 20px rgba(225, 6, 0, 0.4)'}
-                        onMouseLeave={(e) => e.currentTarget.style.boxShadow = 'none'}
-                      >
-                        <Play size={12} fill={COLORS.white} />
-                        Watch Trailer
-                      </a>
-                    )}
-                    {hasPlaystore && (
-                      <a
-                        href={game.playstoreUrl}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        style={{
-                          display: 'inline-flex',
-                          alignItems: 'center',
-                          justifyContent: 'center',
-                          padding: '0.6rem 1rem',
-                          background: 'transparent',
-                          color: COLORS.white,
-                          fontFamily: FONT.body,
-                          fontWeight: 700,
-                          textTransform: 'uppercase',
-                          letterSpacing: '2px',
-                          fontSize: '0.7rem',
-                          borderRadius: BORDER_RADIUS.sm,
-                          border: `1px solid ${COLORS.inputBorder}`,
-                          textDecoration: 'none',
-                          transition: 'all 0.5s cubic-bezier(0.4, 0, 0.2, 1)',
-                          flex: 1,
-                        }}
-                        onMouseEnter={(e) => {
-                          e.currentTarget.style.borderColor = COLORS.primary;
-                          e.currentTarget.style.color = COLORS.primary;
-                        }}
-                        onMouseLeave={(e) => {
-                          e.currentTarget.style.borderColor = COLORS.inputBorder;
-                          e.currentTarget.style.color = COLORS.white;
-                        }}
-                      >
-                        Play Store
-                      </a>
-                    )}
-                  </div>
-                </div>
-              </div>
-            );
-          })}
+          {games.map((game) => (
+            <GameCard key={game.id} game={game} />
+          ))}
         </div>
       </div>
 
       <style>{`
         @media (max-width: 900px) {
-          .previous-games-grid {
+          .games-${categoryName}-grid {
             grid-template-columns: 1fr !important;
           }
         }
         @media (max-width: 1100px) and (min-width: 901px) {
-          .previous-games-grid {
+          .games-${categoryName}-grid {
             grid-template-columns: repeat(2, 1fr) !important;
           }
         }
@@ -320,4 +320,26 @@ const PreviousGames = () => {
   );
 };
 
-export default PreviousGames;
+const FeaturedGames = () => {
+  const { games, loading } = useGames();
+
+  if (loading) return null;
+
+  // Group games by category
+  const latestGames = games.filter(g => g.category === 'latest').sort((a, b) => (a.order || 0) - (b.order || 0));
+  const upcomingGames = games.filter(g => g.category === 'upcoming').sort((a, b) => (a.order || 0) - (b.order || 0));
+  const previousGames = games.filter(g => g.category === 'previous').sort((a, b) => (a.order || 0) - (b.order || 0));
+
+  // For backwards compatibility: games without a category that are not featured -> previous
+  const uncategorized = games.filter(g => !g.featured && !g.category).sort((a, b) => (a.order || 0) - (b.order || 0));
+
+  return (
+    <>
+      <GameSection title="Latest Games" label="Now Available" games={latestGames} categoryName="latest" />
+      <GameSection title="Upcoming Games" label="Coming Soon" games={upcomingGames} categoryName="upcoming" />
+      <GameSection title="Previous Games" label="Previously Released" games={[...previousGames, ...uncategorized]} categoryName="previous" />
+    </>
+  );
+};
+
+export default FeaturedGames;

@@ -15,6 +15,7 @@ const EMPTY_GAME = {
   trailerUrl: '',
   playstoreUrl: '',
   status: 'Released',
+  category: 'latest',
   order: 0,
   featured: false,
 };
@@ -105,6 +106,14 @@ const GamesManager = () => {
               <option value="In Development">In Development</option>
             </select>
           </div>
+          <div style={{ display: 'flex', flexDirection: 'column' }}>
+            <label style={labelStyle}>Category</label>
+            <select value={newGame.category || 'latest'} onChange={e => setNewGame({...newGame, category: e.target.value})} style={inputStyle}>
+              <option value="latest">Latest</option>
+              <option value="previous">Previous</option>
+              <option value="upcoming">Upcoming</option>
+            </select>
+          </div>
           <div style={{ display: 'flex', alignItems: 'flex-end', paddingBottom: '0.2rem' }}>
             <label style={{ display: 'flex', alignItems: 'center', gap: '0.6rem', color: '#fff', fontWeight: 600, textTransform: 'uppercase', cursor: 'pointer', fontSize: '0.85rem', letterSpacing: '1px' }}>
               <input type="checkbox" checked={newGame.featured} onChange={e => setNewGame({...newGame, featured: e.target.checked})} style={{ width: '18px', height: '18px', accentColor: '#e10600' }} />
@@ -182,6 +191,14 @@ const GamesManager = () => {
                 <option value="Released">Released</option>
                 <option value="Coming Soon">Coming Soon</option>
                 <option value="In Development">In Development</option>
+              </select>
+            </div>
+            <div style={{ display: 'flex', flexDirection: 'column' }}>
+              <label style={labelStyle}>Category</label>
+              <select value={editingGame.category || 'latest'} onChange={e => setEditingGame({...editingGame, category: e.target.value})} style={inputStyle}>
+                <option value="latest">Latest</option>
+                <option value="previous">Previous</option>
+                <option value="upcoming">Upcoming</option>
               </select>
             </div>
             <div style={{ display: 'flex', alignItems: 'flex-end', paddingBottom: '0.2rem' }}>

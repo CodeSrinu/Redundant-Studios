@@ -47,7 +47,11 @@ const Games = () => {
     );
   }
 
-  const filteredGames = filter === 'All' ? games : games.filter(g => g.status === filter);
+  const filteredGames = filter === 'All' 
+    ? games 
+    : filter === 'Released' || filter === 'Coming Soon'
+      ? games.filter(g => g.status === filter)
+      : games.filter(g => g.category === filter.toLowerCase());
 
   return (
     <div style={{ padding: `${SPACING.xxxl} ${SPACING.lg}`, backgroundColor: COLORS.bg, minHeight: '100vh' }}>
