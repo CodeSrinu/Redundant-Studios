@@ -9,7 +9,7 @@ export const seedDatabase = async () => {
       hero: {
         headline: 'Redundant Studios',
         subheadline: 'Crafting immersive experiences and pushing the boundaries of game development.',
-        backgroundImageUrl: 'https://via.placeholder.com/1920x1080'
+        backgroundImageUrl: 'https://res.cloudinary.com/yhod98s0/image/upload/v1788331473/MyProfileImg.png'
       },
       about: {
         description: 'Redundant Studios is a passionate team of developers and artists dedicated to creating high-quality, engaging games. We believe in pushing technical boundaries and delivering unique experiences that resonate with players worldwide.',
@@ -20,11 +20,11 @@ export const seedDatabase = async () => {
         ]
       },
       contact: {
-        email: 'contact@redundantstudios.com',
-        discordUrl: '#',
-        instagramUrl: '#',
-        linkedinUrl: '#',
-        youtubeUrl: '#',
+        email: 'redundantstudios79@gmail.com',
+        discordUrl: 'https://discord.com/invite/S3w4j8d7m',
+        instagramUrl: 'https://www.instagram.com/redundantstudios',
+        linkedinUrl: 'https://www.linkedin.com/in/redundant-studios',
+        youtubeUrl: 'https://www.youtube.com/@RedundantStudios',
         playstoreUrl: '#'
       },
       navbarLabels: [
@@ -44,28 +44,36 @@ export const seedDatabase = async () => {
           name: 'Srinu',
           role: 'Founder & CEO',
           description: 'Visionary leader with a passion for creating cutting-edge gaming experiences.',
-          image: 'https://via.placeholder.com/200',
-          socials: { youtube: '#', linkedin: '#', instagram: '#' }
+          image: 'https://res.cloudinary.com/yhod98s0/image/upload/v1788331473/MyProfileImg.png',
+          socials: {
+            youtube: 'https://www.youtube.com/@Srinubytes',
+            linkedin: 'https://www.linkedin.com/in/srinivasu-kadiyam/',
+            instagram: 'https://www.instagram.com/srinu_700'
+          }
         },
         {
           name: 'Bobby',
           role: 'Co-Founder & Lead Dev',
           description: 'Technical wizard driving the engine and gameplay mechanics of our titles.',
-          image: 'https://via.placeholder.com/200',
+          image: 'https://via.placeholder.com/256/141414/cc0000?text=Bobby',
           socials: { youtube: '#', linkedin: '#', instagram: '#' }
         },
         {
           name: 'Badri',
           role: 'Co-Founder & Art Director',
           description: 'Creative force shaping the visual identity and atmosphere of our games.',
-          image: 'https://via.placeholder.com/200',
-          socials: { youtube: '#', linkedin: '#', instagram: '#' }
+          image: 'https://res.cloudinary.com/yhod98s0/image/upload/v1787997872/Badri.jpg',
+          socials: {
+            youtube: 'https://www.youtube.com/@PBR_GameDev',
+            linkedin: 'https://www.linkedin.com/in/pericharla-badri-raju-6924942a5',
+            instagram: 'https://www.instagram.com/bhagavan_pericharla'
+          }
         }
       ],
       teamImages: {
-        srinu: 'https://via.placeholder.com/150',
+        srinu: 'https://res.cloudinary.com/yhod98s0/image/upload/v1788331473/MyProfileImg.png',
         bobby: 'https://via.placeholder.com/150',
-        badri: 'https://via.placeholder.com/150'
+        badri: 'https://res.cloudinary.com/yhod98s0/image/upload/v1787997872/Badri.jpg'
       }
     });
 
@@ -77,7 +85,7 @@ export const seedDatabase = async () => {
       description: 'A 2D top-down zombie shooter — survive waves of the undead.',
       status: 'Released',
       thumbnailUrl: 'https://via.placeholder.com/400x225',
-      trailerUrl: 'https://www.youtube.com/watch?v=ppCIV9tVjYk',
+      trailerUrl: 'https://www.youtube.com/watch?v=QMeNKpE8COM',
       playstoreUrl: '#',
       order: 0,
       featured: true

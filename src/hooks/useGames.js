@@ -11,7 +11,7 @@ const DEFAULT_GAMES = [
     description: 'A 2D top-down zombie shooter — survive waves of the undead.',
     status: 'Released',
     thumbnailUrl: 'https://via.placeholder.com/400x225',
-    trailerUrl: 'https://www.youtube.com/watch?v=ppCIV9tVjYk',
+    trailerUrl: 'https://www.youtube.com/watch?v=QMeNKpE8COM',
     playstoreUrl: '#',
     order: 0,
     featured: true

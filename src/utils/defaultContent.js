@@ -10,7 +10,7 @@ export const DEFAULT_CONTENT = {
   hero: {
     headline: 'Crafting Worlds Beyond Imagination',
     subheadline: 'We are Redundant Studios — an indie team building immersive, story-driven games for players who crave something different.',
-    backgroundImageUrl: 'https://images.unsplash.com/photo-1542751371-adc38448a05e?w=1920',
+    backgroundImageUrl: 'https://res.cloudinary.com/yhod98s0/image/upload/v1788331473/MyProfileImg.png',
     videoBackgroundUrl: '',
   },
   featuredGame: {
@@ -30,19 +30,60 @@ export const DEFAULT_CONTENT = {
     ],
   },
   contact: {
-    email: 'hello@redundantstudios.com',
-    instagramUrl: '',
-    linkedinUrl: '',
-    youtubeUrl: '',
+    email: 'redundantstudios79@gmail.com',
+    instagramUrl: 'https://www.instagram.com/redundantstudios',
+    linkedinUrl: 'https://www.linkedin.com/in/redundant-studios',
+    youtubeUrl: 'https://www.youtube.com/@RedundantStudios',
+    discordUrl: 'https://discord.com/invite/S3w4j8d7m',
     playstoreUrl: '',
   },
   socials: {
-    instagramUrl: '',
-    linkedinUrl: '',
-    youtubeUrl: '',
+    instagramUrl: 'https://www.instagram.com/redundantstudios',
+    linkedinUrl: 'https://www.linkedin.com/in/redundant-studios',
+    youtubeUrl: 'https://www.youtube.com/@RedundantStudios',
+    discordUrl: 'https://discord.com/invite/S3w4j8d7m',
     twitterUrl: '',
   },
-  teamImages: {},
+  founders: [
+    {
+      name: 'Srinu',
+      role: 'Founder & CEO',
+      description: 'Visionary leader with a passion for creating cutting-edge gaming experiences.',
+      image: 'https://res.cloudinary.com/yhod98s0/image/upload/v1788331473/MyProfileImg.png',
+      socials: {
+        youtube: 'https://www.youtube.com/@Srinubytes',
+        linkedin: 'https://www.linkedin.com/in/srinivasu-kadiyam/',
+        instagram: 'https://www.instagram.com/srinu_700',
+      },
+    },
+    {
+      name: 'Bobby',
+      role: 'Co-Founder & Lead Dev',
+      description: 'Technical wizard driving the engine and gameplay mechanics of our titles.',
+      image: 'https://via.placeholder.com/256/141414/cc0000?text=Bobby',
+      socials: {
+        youtube: '',
+        linkedin: '',
+        instagram: '',
+      },
+    },
+    {
+      name: 'Badri',
+      role: 'Co-Founder & Art Director',
+      description: 'Creative force shaping the visual identity and atmosphere of our games.',
+      image: 'https://res.cloudinary.com/yhod98s0/image/upload/v1787997872/Badri.jpg',
+      socials: {
+        youtube: 'https://www.youtube.com/@PBR_GameDev',
+        linkedin: 'https://www.linkedin.com/in/pericharla-badri-raju-6924942a5',
+        instagram: 'https://www.instagram.com/bhagavan_pericharla',
+      },
+    },
+  ],
+  teamImages: {
+    srinu: 'https://res.cloudinary.com/yhod98s0/image/upload/v1788331473/MyProfileImg.png',
+    bobby: '',
+    badri: 'https://res.cloudinary.com/yhod98s0/image/upload/v1787997872/Badri.jpg',
+  },
   font: {
     display: 'Barlow Condensed',
     body: 'Rajdhani',
