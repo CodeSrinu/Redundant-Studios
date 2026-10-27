@@ -105,7 +105,8 @@ function App() {
               <Footer />
             </>
           } />
-          <Route path="/seed" element={<SeedPage />} />
+          {/* Seed route disabled to protect Firestore database */}
+          <Route path="/seed" element={<div style={{ color: '#fff', padding: '50px', textAlign: 'center' }}>Seed route disabled to protect database.</div>} />
 
           {/* Admin Routes */}
           <Route path="/admin/login" element={<AdminLogin />} />
