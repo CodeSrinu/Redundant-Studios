@@ -114,7 +114,7 @@ const Games = () => {
           marginBottom: SPACING.xl,
           flexWrap: 'wrap',
         }}>
-          {['All', 'Released', 'Coming Soon'].map(status => {
+          {['All', 'Latest', 'Previous', 'Upcoming', 'Released', 'Coming Soon'].map(status => {
             const isActive = filter === status;
             return (
               <button
