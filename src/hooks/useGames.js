@@ -11,8 +11,10 @@ const DEFAULT_GAMES = [
     description: 'A 2D top-down zombie shooter — survive waves of the undead.',
     status: 'Released',
     thumbnailUrl: 'https://via.placeholder.com/400x225',
+    trailerUrl: 'https://www.youtube.com/watch?v=ppCIV9tVjYk',
     playstoreUrl: '#',
-    order: 0
+    order: 0,
+    featured: true
   },
   {
     id: 'seed-2',
@@ -22,8 +24,10 @@ const DEFAULT_GAMES = [
     description: 'Explore a neon-drenched city in this high-octane action game.',
     status: 'Coming Soon',
     thumbnailUrl: 'https://via.placeholder.com/400x225',
+    trailerUrl: '',
     playstoreUrl: null,
-    order: 1
+    order: 1,
+    featured: false
   }
 ];
 

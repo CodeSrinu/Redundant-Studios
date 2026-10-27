@@ -2,15 +2,9 @@ import React from 'react';
 import { useGames } from '../../hooks/useGames';
 import { ChevronRight, ExternalLink, Play } from 'lucide-react';
 import { COLORS, SPACING, BORDER_RADIUS, FONT, GRADIENTS, SHADOW } from '../../styles';
+import { getEmbedUrl, getWatchUrl } from '../../utils/youtube';
 
 const isValidUrl = (url) => url && url.trim() !== '' && url.trim() !== '#';
-
-const getEmbedUrl = (url) => {
-  if (!url) return null;
-  const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
-  const match = url.match(regExp);
-  return (match && match[2].length === 11) ? `https://www.youtube.com/embed/${match[2]}` : null;
-};
 
 const FeaturedGameSection = () => {
   const { games, loading } = useGames();
@@ -58,6 +52,7 @@ const FeaturedGameSection = () => {
         <div style={{ display: 'flex', flexDirection: 'column', gap: SPACING.xl }}>
           {featuredGames.map((featuredGame) => {
             const embedUrl = getEmbedUrl(featuredGame.trailerUrl);
+            const watchUrl = getWatchUrl(featuredGame.trailerUrl);
             const hasTrailer = isValidUrl(embedUrl);
             const hasPlaystore = isValidUrl(featuredGame.playstoreUrl);
 
@@ -210,7 +205,7 @@ const FeaturedGameSection = () => {
                   <div style={{ display: 'flex', flexDirection: 'column', gap: '0.85rem' }}>
                     {hasTrailer && (
                       <a
-                        href={embedUrl}
+                        href={watchUrl}
                         target="_blank"
                         rel="noopener noreferrer"
                         style={{

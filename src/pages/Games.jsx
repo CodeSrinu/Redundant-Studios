@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useGames } from '../hooks/useGames';
-import { getEmbedUrl } from '../utils/youtube';
+import { getEmbedUrl, getWatchUrl } from '../utils/youtube';
 import { Play } from 'lucide-react';
 import { COLORS, SPACING, BORDER_RADIUS, FONT, GRADIENTS } from '../styles';
 
@@ -160,6 +160,7 @@ const Games = () => {
         >
           {filteredGames.map((game) => {
             const embedUrl = getEmbedUrl(game.trailerUrl);
+            const watchUrl = getWatchUrl(game.trailerUrl);
             const hasTrailer = isValidUrl(embedUrl);
             const hasPlaystore = isValidUrl(game.playstoreUrl);
             return (
@@ -294,7 +295,7 @@ const Games = () => {
                   <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
                     {hasTrailer && (
                       <a
-                        href={embedUrl}
+                        href={watchUrl}
                         target="_blank"
                         rel="noopener noreferrer"
                         style={{
