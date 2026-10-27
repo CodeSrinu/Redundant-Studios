@@ -325,14 +325,12 @@ const FeaturedGames = () => {
 
   if (loading) return null;
 
-  // Group games by category (exclude featured games - they appear separately in FeaturedGameSection)
-  const latestGames = games.filter(g => g.category === 'latest' && !g.featured).sort((a, b) => (a.order || 0) - (b.order || 0));
+  // Group games by category (exclude featured games - they appear separately in FeaturedGameSection as Popular Games)
   const upcomingGames = games.filter(g => g.category === 'upcoming' && !g.featured).sort((a, b) => (a.order || 0) - (b.order || 0));
   const previousGames = games.filter(g => g.category === 'previous' && !g.featured).sort((a, b) => (a.order || 0) - (b.order || 0));
 
   return (
     <>
-      <GameSection title="Latest Games" label="Now Available" games={latestGames} categoryName="latest" />
       <GameSection title="Upcoming Games" label="Coming Soon" games={upcomingGames} categoryName="upcoming" />
       <GameSection title="Previous Games" label="Previously Released" games={previousGames} categoryName="previous" />
     </>

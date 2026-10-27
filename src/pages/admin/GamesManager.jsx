@@ -108,8 +108,7 @@ const GamesManager = () => {
           </div>
           <div style={{ display: 'flex', flexDirection: 'column' }}>
             <label style={labelStyle}>Category</label>
-            <select value={newGame.category || 'latest'} onChange={e => setNewGame({...newGame, category: e.target.value})} style={inputStyle}>
-              <option value="latest">Latest</option>
+            <select value={newGame.category || 'previous'} onChange={e => setNewGame({...newGame, category: e.target.value})} style={inputStyle}>
               <option value="previous">Previous</option>
               <option value="upcoming">Upcoming</option>
             </select>
@@ -195,8 +194,7 @@ const GamesManager = () => {
             </div>
             <div style={{ display: 'flex', flexDirection: 'column' }}>
               <label style={labelStyle}>Category</label>
-              <select value={editingGame.category || 'latest'} onChange={e => setEditingGame({...editingGame, category: e.target.value})} style={inputStyle}>
-                <option value="latest">Latest</option>
+              <select value={editingGame.category || 'previous'} onChange={e => setEditingGame({...editingGame, category: e.target.value})} style={inputStyle}>
                 <option value="previous">Previous</option>
                 <option value="upcoming">Upcoming</option>
               </select>

@@ -44,7 +44,7 @@ const FeaturedGameSection = () => {
             letterSpacing: '4px',
             textTransform: 'uppercase',
           }}>
-            Latest Games
+            Popular Games
           </span>
           </div>
         )}

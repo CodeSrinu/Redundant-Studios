@@ -84,7 +84,7 @@ export const seedDatabase = async () => {
       platform: 'Android',
       description: 'A 2D top-down zombie shooter — survive waves of the undead.',
       status: 'Released',
-      category: 'latest',
+      category: 'previous',
       thumbnailUrl: 'https://via.placeholder.com/400x225',
       trailerUrl: 'https://www.youtube.com/watch?v=QMeNKpE8COM',
       playstoreUrl: '#',
