@@ -49,6 +49,28 @@ const FeaturedGameSection = () => {
           </div>
         )}
 
+        <div style={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'flex-end',
+          marginBottom: SPACING.md,
+          flexWrap: 'wrap',
+          gap: SPACING.md,
+        }}>
+          <h2 style={{
+            fontFamily: FONT.display,
+            fontSize: 'clamp(2rem, 5vw, 3.25rem)',
+            color: COLORS.white,
+            fontWeight: 700,
+            textTransform: 'uppercase',
+            letterSpacing: '3px',
+            margin: 0,
+            lineHeight: '0.95',
+          }}>
+            Popular Games
+          </h2>
+        </div>
+
         <div style={{ display: 'flex', flexDirection: 'column', gap: SPACING.xl }}>
           {featuredGames.map((featuredGame) => {
             const embedUrl = getEmbedUrl(featuredGame.trailerUrl);
