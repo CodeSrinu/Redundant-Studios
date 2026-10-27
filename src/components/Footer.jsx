@@ -10,7 +10,16 @@ const Footer = () => {
   const { content } = useFirestoreContent();
   const data = content || DEFAULT_CONTENT;
   const studioName = data?.studioName || 'Redundant Studios';
-  const contact = data?.contact || DEFAULT_CONTENT.contact;
+  const rawContact = data?.contact || DEFAULT_CONTENT.contact;
+  const contact = {
+    ...DEFAULT_CONTENT.contact,
+    ...rawContact,
+    instagramUrl: (rawContact.instagramUrl && rawContact.instagramUrl !== '#') ? rawContact.instagramUrl : DEFAULT_CONTENT.contact.instagramUrl,
+    linkedinUrl: (rawContact.linkedinUrl && rawContact.linkedinUrl !== '#') ? rawContact.linkedinUrl : DEFAULT_CONTENT.contact.linkedinUrl,
+    youtubeUrl: (rawContact.youtubeUrl && rawContact.youtubeUrl !== '#') ? rawContact.youtubeUrl : DEFAULT_CONTENT.contact.youtubeUrl,
+    discordUrl: (rawContact.discordUrl && rawContact.discordUrl !== '#') ? rawContact.discordUrl : DEFAULT_CONTENT.contact.discordUrl,
+    email: (rawContact.email && rawContact.email !== '#') ? rawContact.email : DEFAULT_CONTENT.contact.email,
+  };
   const logoUrl = data?.logoUrl || '';
 
   const navLinks = data?.navbarLabels || DEFAULT_CONTENT.navbarLabels;
@@ -20,7 +29,7 @@ const Footer = () => {
     { icon: Youtube, url: contact.youtubeUrl, label: 'YouTube' },
     { icon: DiscordIcon, url: contact.discordUrl, label: 'Discord' },
     { icon: Mail, url: contact.email ? `mailto:${contact.email}` : null, label: 'Email' },
-  ].filter(s => s.url);
+  ].filter(s => s.url && s.url !== '#');
 
   return (
     <footer style={{

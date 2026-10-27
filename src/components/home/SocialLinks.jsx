@@ -8,7 +8,15 @@ import { COLORS, SPACING, FONT } from '../../styles';
 const SocialLinks = () => {
   const { content } = useFirestoreContent();
   const data = content || DEFAULT_CONTENT;
-  const contact = data?.contact || DEFAULT_CONTENT.contact;
+  const rawContact = data?.contact || DEFAULT_CONTENT.contact;
+  const contact = {
+    ...DEFAULT_CONTENT.contact,
+    ...rawContact,
+    instagramUrl: (rawContact.instagramUrl && rawContact.instagramUrl !== '#') ? rawContact.instagramUrl : DEFAULT_CONTENT.contact.instagramUrl,
+    linkedinUrl: (rawContact.linkedinUrl && rawContact.linkedinUrl !== '#') ? rawContact.linkedinUrl : DEFAULT_CONTENT.contact.linkedinUrl,
+    youtubeUrl: (rawContact.youtubeUrl && rawContact.youtubeUrl !== '#') ? rawContact.youtubeUrl : DEFAULT_CONTENT.contact.youtubeUrl,
+    discordUrl: (rawContact.discordUrl && rawContact.discordUrl !== '#') ? rawContact.discordUrl : DEFAULT_CONTENT.contact.discordUrl,
+  };
 
   const links = [
     { name: 'Instagram', icon: Instagram, url: contact.instagramUrl },
@@ -16,7 +24,7 @@ const SocialLinks = () => {
     { name: 'YouTube', icon: Youtube, url: contact.youtubeUrl },
     { name: 'Play Store', icon: Play, url: contact.playstoreUrl },
     { name: 'Discord', icon: DiscordIcon, url: contact.discordUrl },
-  ].filter(l => l.url);
+  ].filter(l => l.url && l.url !== '#');
 
   if (links.length === 0) return null;
 

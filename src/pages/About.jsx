@@ -8,14 +8,15 @@ const About = () => {
   const content = hookContent || DEFAULT_CONTENT;
   const about = content?.about || DEFAULT_CONTENT.about;
 
-  // Prefer the founders array (full data with socials); fall back to teamImages
-  const founders = content?.founders && content.founders.length > 0
+  const rawFounders = (content?.founders && content.founders.length > 0)
     ? content.founders
-    : [
-        { name: 'Srinu', role: 'Founder & CEO', image: content?.teamImages?.srinu },
-        { name: 'Bobby', role: 'Co-Founder & Lead Dev', image: content?.teamImages?.bobby },
-        { name: 'Badri', role: 'Co-Founder & Art Director', image: content?.teamImages?.badri },
-      ];
+    : DEFAULT_CONTENT.founders;
+
+  const founders = rawFounders.map((f, i) => {
+    const fallback = DEFAULT_CONTENT.founders[i] || {};
+    const image = (f.image && !f.image.includes('placeholder')) ? f.image : (fallback.image || f.image);
+    return { ...f, image };
+  });
 
   return (
     <div style={{ backgroundColor: COLORS.bg, minHeight: '100vh' }}>

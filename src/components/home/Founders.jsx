@@ -8,7 +8,18 @@ import { COLORS, SPACING, BORDER_RADIUS, FONT, GRADIENTS } from '../../styles';
 const Founders = () => {
   const { content } = useFirestoreContent();
   const data = content || DEFAULT_CONTENT;
-  const founders = data?.founders;
+  const rawFounders = data?.founders || DEFAULT_CONTENT.founders;
+
+  const founders = rawFounders.map((f, i) => {
+    const fallback = DEFAULT_CONTENT.founders[i] || {};
+    const image = (f.image && !f.image.includes('placeholder')) ? f.image : (fallback.image || f.image);
+    const socials = {
+      youtube: (f.socials?.youtube && f.socials.youtube !== '#') ? f.socials.youtube : fallback.socials?.youtube,
+      linkedin: (f.socials?.linkedin && f.socials.linkedin !== '#') ? f.socials.linkedin : fallback.socials?.linkedin,
+      instagram: (f.socials?.instagram && f.socials.instagram !== '#') ? f.socials.instagram : fallback.socials?.instagram,
+    };
+    return { ...f, image, socials };
+  });
 
   if (!founders || founders.length === 0) return null;
 

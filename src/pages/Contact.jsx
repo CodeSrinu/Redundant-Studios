@@ -8,7 +8,16 @@ import { COLORS, SPACING, FONT, BORDER_RADIUS } from '../styles';
 const Contact = () => {
   const { content: hookContent } = useFirestoreContent();
   const content = hookContent || DEFAULT_CONTENT;
-  const contact = content?.contact || DEFAULT_CONTENT.contact;
+  const rawContact = content?.contact || DEFAULT_CONTENT.contact;
+  const contact = {
+    ...DEFAULT_CONTENT.contact,
+    ...rawContact,
+    instagramUrl: (rawContact.instagramUrl && rawContact.instagramUrl !== '#') ? rawContact.instagramUrl : DEFAULT_CONTENT.contact.instagramUrl,
+    linkedinUrl: (rawContact.linkedinUrl && rawContact.linkedinUrl !== '#') ? rawContact.linkedinUrl : DEFAULT_CONTENT.contact.linkedinUrl,
+    youtubeUrl: (rawContact.youtubeUrl && rawContact.youtubeUrl !== '#') ? rawContact.youtubeUrl : DEFAULT_CONTENT.contact.youtubeUrl,
+    discordUrl: (rawContact.discordUrl && rawContact.discordUrl !== '#') ? rawContact.discordUrl : DEFAULT_CONTENT.contact.discordUrl,
+    email: (rawContact.email && rawContact.email !== '#') ? rawContact.email : DEFAULT_CONTENT.contact.email,
+  };
 
   const socials = [
     { name: 'Instagram', icon: Instagram, url: contact.instagramUrl },
@@ -16,7 +25,7 @@ const Contact = () => {
     { name: 'YouTube', icon: Youtube, url: contact.youtubeUrl },
     { name: 'Play Store', icon: Play, url: contact.playstoreUrl },
     { name: 'Discord', icon: DiscordIcon, url: contact.discordUrl },
-  ].filter(s => s.url);
+  ].filter(s => s.url && s.url !== '#');
 
   return (
     <div style={{ backgroundColor: COLORS.bg, minHeight: '100vh' }}>

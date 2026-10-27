@@ -20,7 +20,11 @@ const getYouTubeEmbed = (url) => {
 const Hero = ({ content: propContent }) => {
   const { content: hookContent } = useFirestoreContent();
   const content = propContent || hookContent || DEFAULT_CONTENT;
-  const hero = content?.hero || DEFAULT_CONTENT.hero;
+  const rawHero = content?.hero || DEFAULT_CONTENT.hero;
+  const heroBg = (rawHero?.backgroundImageUrl && !rawHero.backgroundImageUrl.includes('placeholder')) 
+    ? rawHero.backgroundImageUrl 
+    : DEFAULT_CONTENT.hero.backgroundImageUrl;
+  const hero = { ...rawHero, backgroundImageUrl: heroBg };
 
   const videoUrl = hero.videoBackgroundUrl || '';
   const isDirect = isDirectVideoUrl(videoUrl);
